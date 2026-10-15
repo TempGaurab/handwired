@@ -17,6 +17,9 @@ const publishedPages: SitePage[] = [
   {source: 'assets/demos.html', path: ''},
   {source: 'assets/index.html', path: 'os/'},
   {source: 'assets/learned-gallery.html', path: 'learned-gallery/'},
+  {source: 'assets/life.html', path: 'life/'},
+  {source: 'assets/tic-tac-toe.html', path: 'tic-tac-toe/'},
+  {source: 'assets/sorting.html', path: 'sorting/'},
 ]
 // A page of this list is built, served and checked only while its file exists. The list was made for the GPU search
 // demo while its page was being written. The page exists now, and its card in assets/demos.html is shown.

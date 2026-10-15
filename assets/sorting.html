@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sorting chart · Handwired</title>
+  <meta name="description" content="A bar chart that sorts itself while you drag. items.sort() written as one comparison per pair of bars, three layers deep, with springs that carry each bar to its slot.">
+  <link rel="stylesheet" href="./wired.css">
+</head>
+<body>
+  <main id="sorting-demo" class="page wide">
+    <header class="masthead">
+      <a class="brand back" href="../">
+        <svg width="7" height="12" viewBox="0 0 7 12" aria-hidden="true"><path d="M5.5 1.5L1.5 6l4 4.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Back to demos
+      </a>
+      <nav>
+        <a href="https://github.com/chenglou/handwired/tree/main/src/sorting">Source</a>
+      </nav>
+    </header>
+
+    <h1 class="title">Sorting chart</h1>
+    <p class="deck">A bar chart that keeps itself sorted while you drag. <code>items.sort()</code> without a loop: <em>three layers deep</em>.</p>
+
+    <div class="try">
+      <span class="label">Try</span>
+      <ul>
+        <li>Drag a bar up or down</li>
+        <li>Keep dragging as it slides away</li>
+        <li>Shuffle, or flip the order</li>
+      </ul>
+    </div>
+
+    <div class="split">
+      <div>
+        <div id="sorting-chart" class="surface chart">
+          <div id="sorting-area" class="chart-area" role="group" aria-label="Sixteen bars, sorted by height. Drag a bar to change its height."><div class="floor"></div></div>
+        </div>
+        <div class="tools">
+          <button id="sorting-shuffle" class="button primary" type="button">Shuffle</button>
+          <button id="sorting-flip" class="button" type="button">Ascending</button>
+          <span class="spacer"></span>
+          <p class="stats" style="margin: 0"><b id="sorting-evaluations">0</b> evaluations · <b id="sorting-cost">–</b> each</p>
+        </div>
+      </div>
+
+      <div class="explain">
+        <section>
+          <h2 class="label">Sort without a loop</h2>
+          <pre class="code-pair"><span class="comment">// your code</span>
+items.sort((a, b) => a - b)
+
+<span class="comment">// turns into, for each pair i &lt; j, once</span>
+before = [v[j] &lt; v[i]]
+rank[i] += before
+rank[j] += 1 - before
+x[i] = 36 × rank[i]</pre>
+        </section>
+        <section>
+          <p>A bar&rsquo;s place is how many bars come before it, so 16 bars need 120 comparisons, all side by side. Heights are whole pixels, which makes each comparison 2 ReLUs and the whole sort 3 layers. Equal bars keep their order, the way <code>sort</code> is stable.</p>
+          <p>The bar you hold follows you up and down, and its rank changes under your pointer, so it slides away sideways while you still hold it. A press grabs the bar by where it&rsquo;s going, not where it&rsquo;s drawn, and changes nothing by itself: the drag is relative to where you pressed.</p>
+        </section>
+        <section>
+          <h2 class="label">Springs</h2>
+          <p>Each bar&rsquo;s x and height are springs, 32 in all, stepped inside the same evaluation by a 2 × 2 matrix that the page writes for the time since the last one. They land exactly on their slots, and then the page stops drawing.</p>
+        </section>
+      </div>
+    </div>
+
+    <section class="network" aria-labelledby="sorting-network-title">
+      <div class="network-head">
+        <h2 id="sorting-network-title" class="label">The network</h2>
+        <p class="stats"><b data-measure="weights"></b> weights · <b data-measure="neurons"></b> neurons · <b data-measure="layers"></b> layers</p>
+      </div>
+      <div id="sorting-layers" class="layers" aria-label="Each compiled layer: its weight matrix above, its outputs in the latest evaluation below"></div>
+      <div class="layer-legend">
+        <span><i class="positive"></i>positive weight or value</span>
+        <span><i class="negative"></i>negative</span>
+        <span>Top: a layer&rsquo;s weights, outputs down, inputs across. Bottom: its outputs in the latest evaluation.</span>
+      </div>
+    </section>
+  </main>
+  <script type="module" src="../src/sorting/sorting-page.ts"></script>
+</body>
+</html>

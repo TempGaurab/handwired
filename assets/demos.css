@@ -178,6 +178,23 @@ a.card:hover .go::after { transform: translateX(3px); }
 .documents .document { fill: var(--ink); fill-opacity: 0.3; }
 .documents .found { fill: var(--copper); }
 
+/* The three small demos: one row of three cards, each picture drawn in the site's colors. */
+.demos.trio { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.demos.trio .demo-picture { height: 168px; display: grid; place-items: center; padding: var(--space-4); }
+.demos.trio .demo-picture svg { width: 100%; height: 100%; }
+.demos.trio .demo p code { font-size: 0.82em; }
+.life-cells .dot { fill: var(--ink); fill-opacity: 0.18; }
+.life-cells .cell { fill: var(--ink); }
+.ttt-mini .grid { fill: none; stroke: var(--rule-strong); stroke-width: 2; stroke-linecap: round; }
+.ttt-mini .x { fill: none; stroke: var(--ink); stroke-width: 4; stroke-linecap: round; }
+.ttt-mini .o { fill: none; stroke: var(--copper); stroke-width: 4; }
+.ttt-mini .win { fill: none; stroke: var(--copper); stroke-width: 3; stroke-linecap: round; stroke-opacity: 0.55; }
+.sort-bars .bar { fill: var(--copper); }
+.sort-bars .floor { stroke: var(--rule-strong); }
+@media (max-width: 1000px) {
+  .demos.trio { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
 /* Below the page's full width, 1104 px, the opening is one column: the headline runs across the page, and the
    sentence and the example follow under it. Beside the example the headline's column is 464 px, and the headline's
    longest line, "Turn your regular", is 444 px wide in the Mac's serif and 458 px in Palatino Linotype, the widest
@@ -198,7 +215,8 @@ a.card:hover .go::after { transform: translateX(3px); }
 /* One card to a row in a window narrower than 720 px, where each of two cards side by side would be less than
    324 px wide. No neighbor's picture needs to line up, so each picture is as tall as what it shows. */
 @media (max-width: 719px) {
-  .demos { grid-template-columns: 1fr; gap: var(--space-4); }
+  .demos, .demos.trio { grid-template-columns: 1fr; gap: var(--space-4); }
+  .demos.trio .demo-picture { height: 148px; }
   .demo-body { padding: var(--space-4) 20px 20px; }
   .demo.is-first .demo-body { padding: 20px; }
   .demo-picture { height: auto; }

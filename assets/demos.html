@@ -205,6 +205,47 @@
           </div>
         </a>
       </section>
+
+      <h2 class="label section-label" id="small-demos">Small programs, wired by hand</h2>
+
+      <!-- Three small demos, each one program with a plain JavaScript version that its test compares it with. Each
+           page draws its compiled layers under the demo. -->
+      <section class="demos trio" aria-labelledby="small-demos">
+        <a class="card demo" href="life/" aria-labelledby="life-title">
+          <div class="demo-picture" aria-hidden="true">
+            <svg class="life-cells" viewBox="0 0 282 142" preserveAspectRatio="xMidYMid meet"><defs><pattern id="life-grid" width="14" height="14" patternUnits="userSpaceOnUse"><rect class="dot" x="6" y="6" width="2" height="2"/></pattern></defs><rect width="282" height="142" fill="url(#life-grid)"/><rect class="cell" x="30" y="16" width="11" height="11" rx="2"/><rect class="cell" x="44" y="16" width="11" height="11" rx="2"/><rect class="cell" x="142" y="16" width="11" height="11" rx="2"/><rect class="cell" x="30" y="30" width="11" height="11" rx="2"/><rect class="cell" x="44" y="30" width="11" height="11" rx="2"/><rect class="cell" x="128" y="30" width="11" height="11" rx="2"/><rect class="cell" x="156" y="30" width="11" height="11" rx="2"/><rect class="cell" x="114" y="44" width="11" height="11" rx="2"/><rect class="cell" x="170" y="44" width="11" height="11" rx="2"/><rect class="cell" x="128" y="58" width="11" height="11" rx="2"/><rect class="cell" x="156" y="58" width="11" height="11" rx="2"/><rect class="cell" x="226" y="58" width="11" height="11" rx="2"/><rect class="cell" x="240" y="58" width="11" height="11" rx="2"/><rect class="cell" x="142" y="72" width="11" height="11" rx="2"/><rect class="cell" x="226" y="72" width="11" height="11" rx="2"/><rect class="cell" x="254" y="72" width="11" height="11" rx="2"/><rect class="cell" x="254" y="86" width="11" height="11" rx="2"/><rect class="cell" x="44" y="100" width="11" height="11" rx="2"/><rect class="cell" x="58" y="114" width="11" height="11" rx="2"/><rect class="cell" x="30" y="128" width="11" height="11" rx="2"/><rect class="cell" x="44" y="128" width="11" height="11" rx="2"/><rect class="cell" x="58" y="128" width="11" height="11" rx="2"/></svg>
+          </div>
+          <div class="demo-body">
+            <h3 id="life-title">Game of Life</h3>
+            <p>Conway&rsquo;s rules as 1,536 hand-wired neurons: four ReLUs per cell, exact on every cell.</p>
+          </div>
+        </a>
+
+        <a class="card demo" href="tic-tac-toe/" aria-labelledby="tic-tac-toe-title">
+          <div class="demo-picture" aria-hidden="true">
+            <svg class="ttt-mini" viewBox="0 0 150 150" preserveAspectRatio="xMidYMid meet">
+              <path class="grid" d="M50 8V142M100 8V142M8 50H142M8 100H142"/>
+              <path class="x" d="M17 17L33 33M33 17L17 33M117 67L133 83M133 67L117 83M67 117L83 133M83 117L67 133"/>
+              <circle class="o" cx="75" cy="75" r="10"/><circle class="o" cx="125" cy="25" r="10"/><circle class="o" cx="25" cy="125" r="10"/>
+              <path class="win" d="M18 132L132 18"/>
+            </svg>
+          </div>
+          <div class="demo-body">
+            <h3 id="tic-tac-toe-title">Tic-tac-toe</h3>
+            <p>A network whose strategy was written, not trained. It never loses a single one of the 597 games you can play.</p>
+          </div>
+        </a>
+
+        <a class="card demo" href="sorting/" aria-labelledby="sorting-title">
+          <div class="demo-picture" aria-hidden="true">
+            <svg class="sort-bars" viewBox="0 0 282 146" preserveAspectRatio="xMidYMid meet"><rect class="bar" x="8" y="118" width="17" height="22" rx="3" style="opacity: 0.40"/><rect class="bar" x="31" y="110" width="17" height="30" rx="3" style="opacity: 0.45"/><rect class="bar" x="54" y="102" width="17" height="38" rx="3" style="opacity: 0.51"/><rect class="bar" x="77" y="94" width="17" height="46" rx="3" style="opacity: 0.56"/><rect class="bar" x="100" y="84" width="17" height="56" rx="3" style="opacity: 0.62"/><rect class="bar" x="123" y="76" width="17" height="64" rx="3" style="opacity: 0.67"/><rect class="bar" x="146" y="66" width="17" height="74" rx="3" style="opacity: 0.73"/><rect class="bar" x="169" y="56" width="17" height="84" rx="3" style="opacity: 0.78"/><rect class="bar" x="192" y="44" width="17" height="96" rx="3" style="opacity: 0.84"/><rect class="bar" x="215" y="32" width="17" height="108" rx="3" style="opacity: 0.89"/><rect class="bar" x="238" y="20" width="17" height="120" rx="3" style="opacity: 0.95"/><rect class="bar" x="261" y="8" width="17" height="132" rx="3" style="opacity: 1.00"/><path class="floor" d="M2 140.5H280"/></svg>
+          </div>
+          <div class="demo-body">
+            <h3 id="sorting-title">Sorting chart</h3>
+            <p>Drag a bar and the chart sorts itself, springs and all. <code>items.sort()</code> without a loop, three layers deep.</p>
+          </div>
+        </a>
+      </section>
     </main>
   </div>
 </body>

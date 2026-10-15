@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Game of Life · Handwired</title>
+  <meta name="description" content="Conway's Game of Life where every cell is a hand-wired neuron: one layer of four ReLUs over its neighbors. No training, and exact on every cell.">
+  <link rel="stylesheet" href="./wired.css">
+</head>
+<body>
+  <main id="life-demo" class="page wide">
+    <header class="masthead">
+      <a class="brand back" href="../">
+        <svg width="7" height="12" viewBox="0 0 7 12" aria-hidden="true"><path d="M5.5 1.5L1.5 6l4 4.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Back to demos
+      </a>
+      <nav>
+        <a href="https://github.com/chenglou/handwired/tree/main/src/life">Source</a>
+      </nav>
+    </header>
+
+    <h1 class="title">Game of Life</h1>
+    <p class="deck">Conway&rsquo;s rules as 1,536 hand-wired neurons. No training, and <em>exact on every cell</em>.</p>
+
+    <div class="try">
+      <span class="label">Try</span>
+      <ul>
+        <li>Draw on the board</li>
+        <li>Press Play, or step one generation</li>
+        <li>Pick a pattern</li>
+      </ul>
+    </div>
+
+    <div class="split">
+      <div>
+        <div class="surface board">
+          <canvas id="life-board" role="img" aria-label="The board: 48 by 32 cells. Drag to draw live cells, or start on a live cell to erase."></canvas>
+        </div>
+        <div class="tools">
+          <button id="life-play" class="button primary" type="button">Play</button>
+          <button id="life-step" class="button" type="button">Step</button>
+          <div id="life-presets" class="segments" role="group" aria-label="Patterns">
+            <button type="button" data-preset="gun">Glider gun</button>
+            <button type="button" data-preset="pulsars">Pulsars</button>
+            <button type="button" data-preset="ships">Ships</button>
+            <button type="button" data-preset="soup">Random</button>
+            <button type="button" data-preset="empty">Clear</button>
+          </div>
+        </div>
+        <div class="tools">
+          <label class="range-row">Speed <input id="life-speed" type="range" min="1" max="60" value="15"><output id="life-speed-value"></output></label>
+          <span class="spacer"></span>
+          <p class="stats" style="margin: 0">Generation <b id="life-generation">0</b> · <b id="life-population">0</b> alive · <b id="life-cost">–</b> per generation</p>
+        </div>
+      </div>
+
+      <div class="explain">
+        <section>
+          <h2 class="label">One cell, one neuron</h2>
+          <pre class="code-pair"><span class="comment">// your code</span>
+next = alive ? n === 2 || n === 3 : n === 3
+
+<span class="comment">// turns into, with s = 2 × n + alive</span>
+next = relu(s - 4) - relu(s - 5)
+     - relu(s - 7) + relu(s - 8)</pre>
+        </section>
+        <section>
+          <p>A live cell survives with 2 or 3 neighbors, so at <code>s</code> = 5 or 7. A dead cell is born with 3, at <code>s</code> = 6. So the whole rule is &ldquo;<code>s</code> is from 5 to 7&rdquo;, and for a whole number <code>s</code> that is the difference of two ReLU steps, which is exactly 1 or 0.</p>
+          <p><code>s</code> is a 3 × 3 convolution: weight 2 on the 8 neighbors and 1 on the cell itself. The board wraps around at its edges, so a glider that leaves on the right comes back on the left.</p>
+        </section>
+        <section>
+          <h2 class="label">Drawing</h2>
+          <p>Your pen is in the network too. A press reads the cell under it with one table read and remembers the opposite value. A drag writes that value into every cell it crosses, through a select on each cell&rsquo;s next state.</p>
+        </section>
+      </div>
+    </div>
+
+    <section class="network" aria-labelledby="life-network-title">
+      <div class="network-head">
+        <h2 id="life-network-title" class="label">The network</h2>
+        <p class="stats"><b data-measure="weights"></b> weights · <b data-measure="neurons"></b> neurons · <b data-measure="layers"></b> layers</p>
+      </div>
+      <div id="life-layers" class="layers" aria-label="Each compiled layer: its weight matrix above, its outputs in the latest generation below"></div>
+      <div class="layer-legend">
+        <span><i class="positive"></i>positive weight or value</span>
+        <span><i class="negative"></i>negative</span>
+        <span>Top: a layer&rsquo;s weights, outputs down, inputs across. Bottom: its outputs in the latest evaluation.</span>
+      </div>
+    </section>
+  </main>
+  <script type="module" src="../src/life/life-page.ts"></script>
+</body>
+</html>

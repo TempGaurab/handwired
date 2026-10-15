@@ -2,6 +2,13 @@ const config = {
   entry: [
     'src/handwiredos/window-manager.ts',
     'src/learned-gallery/learned-gallery.ts',
+    // The three small demos' pages. Each demo's plain JavaScript version is imported only by its test in tests/.
+    'src/life/life-page.ts',
+    'src/life/life-reference.ts',
+    'src/tic-tac-toe/tic-tac-toe-page.ts',
+    'src/tic-tac-toe/tic-tac-toe-reference.ts',
+    'src/sorting/sorting-page.ts',
+    'src/sorting/sorting-reference.ts',
     // JSON search's page loads demo.ts. demo.ts starts demo-worker.ts as a worker from a URL, which is not an import,
     // and imports only two types from it, and scripts/demo-site-pages.ts builds the worker as a file of its own. So
     // both are entries. demo.ts reaches the two programs that the page runs, in src/json-search/regex and

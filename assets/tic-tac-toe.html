@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tic-tac-toe · Handwired</title>
+  <meta name="description" content="Play tic-tac-toe against a hand-wired network that never loses. Its strategy is written as plain rules, then turned into ReLUs and an argmax.">
+  <link rel="stylesheet" href="./wired.css">
+</head>
+<body>
+  <main id="ttt-demo" class="page wide">
+    <header class="masthead">
+      <a class="brand back" href="../">
+        <svg width="7" height="12" viewBox="0 0 7 12" aria-hidden="true"><path d="M5.5 1.5L1.5 6l4 4.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Back to demos
+      </a>
+      <nav>
+        <a href="https://github.com/chenglou/handwired/tree/main/src/tic-tac-toe">Source</a>
+      </nav>
+    </header>
+
+    <h1 class="title">Tic-tac-toe</h1>
+    <p class="deck">A network whose strategy was written, not trained. Every one of the 597 games you can play against it ends in <em>a draw or its win</em>.</p>
+
+    <div class="try">
+      <span class="label">Try</span>
+      <ul>
+        <li>Play X: pick a square</li>
+        <li>Try to set up a fork</li>
+        <li>Let the network go first</li>
+      </ul>
+    </div>
+
+    <div class="split">
+      <div>
+        <div id="ttt-board" class="surface ttt-board" role="group" aria-label="The board"></div>
+        <div class="tools">
+          <button id="ttt-new" class="button primary" type="button">New game</button>
+          <button id="ttt-network-first" class="button" type="button">Network goes first</button>
+        </div>
+        <p id="ttt-status" class="status" role="status" style="margin-top: var(--space-3)"></p>
+        <dl class="tally">
+          <div><dt>You</dt><dd id="ttt-you">0</dd></div>
+          <div><dt>Draws</dt><dd id="ttt-draws">0</dd></div>
+          <div><dt>Network</dt><dd id="ttt-network">0</dd></div>
+        </dl>
+      </div>
+
+      <div class="explain">
+        <section>
+          <h2 class="label">Its rules, strongest first</h2>
+          <ol id="ttt-rules" class="rules"></ol>
+        </section>
+        <section>
+          <p>Each rule holds on a square or doesn&rsquo;t, and a square&rsquo;s score adds a weight for every rule that holds, each weight larger than all the ones below it together. The bar in each square is the score it got on the network&rsquo;s last move, and an argmax tournament picks the highest.</p>
+        </section>
+        <section>
+          <h2 class="label">A rule as ReLUs</h2>
+          <pre class="code-pair"><span class="comment">// your code: O has two in a line, X none</span>
+oc === 2 &amp;&amp; xc === 0
+
+<span class="comment">// turns into, with s = oc - 3 × xc</span>
+relu(s - 1) - relu(s - 2)</pre>
+          <p style="margin-top: var(--space-2)">Any X in the line pushes <code>s</code> below 0, so <code>s</code> is 2 only for two O and no X, and the two ReLUs make the step at 2. Forks count such lines through a square with one more step.</p>
+        </section>
+      </div>
+    </div>
+
+    <section class="network" aria-labelledby="ttt-network-title">
+      <div class="network-head">
+        <h2 id="ttt-network-title" class="label">The network</h2>
+        <p class="stats"><b data-measure="weights"></b> weights · <b data-measure="neurons"></b> neurons · <b data-measure="layers"></b> layers</p>
+      </div>
+      <p class="stats">One evaluation takes your move, checks the board, scores all nine squares, runs the argmax and makes the network&rsquo;s move. The later layers are the tournament: pairs of scores compared, then the winner&rsquo;s path routed back to one square.</p>
+      <div id="ttt-layers" class="layers" aria-label="Each compiled layer: its weight matrix above, its outputs in the latest evaluation below"></div>
+      <div class="layer-legend">
+        <span><i class="positive"></i>positive weight or value</span>
+        <span><i class="negative"></i>negative</span>
+        <span>Top: a layer&rsquo;s weights, outputs down, inputs across. Bottom: its outputs in the latest evaluation.</span>
+      </div>
+    </section>
+  </main>
+  <script type="module" src="../src/tic-tac-toe/tic-tac-toe-page.ts"></script>
+</body>
+</html>

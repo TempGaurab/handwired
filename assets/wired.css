@@ -1,0 +1,263 @@
+/* The three small demos: Game of Life, tic-tac-toe and the sorting chart. Each page links this file only, which imports
+   assets/site.css first for the tokens, the header, the title, the "Try" list and the buttons, as learned-gallery.css
+   does. The sections below are the parts the pages share, then one section per page. */
+@import "./site.css";
+
+.deck em { color: var(--ink); }
+
+/* The stage and the explanation beside it, one column under 900 px. */
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: var(--space-6);
+  margin-top: var(--space-6);
+  align-items: start;
+}
+@media (max-width: 899px) {
+  .split { grid-template-columns: minmax(0, 1fr); }
+}
+
+.tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  margin-top: var(--space-3);
+}
+.tools .spacer { flex: 1; }
+.range-row {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font: var(--type-ui);
+  color: var(--ink-2);
+}
+.range-row input { accent-color: var(--copper); width: 110px; }
+.range-row output { min-width: 3.5em; font-variant-numeric: tabular-nums; }
+
+.segments {
+  display: inline-flex;
+  border: 1px solid var(--edge);
+  border-radius: var(--radius-2);
+  background: var(--sheet);
+  box-shadow: var(--shadow-1);
+}
+.segments button {
+  height: 30px;
+  padding: 0 var(--space-3);
+  border: 0;
+  border-left: 1px solid var(--rule);
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink-2);
+  font: 600 13px/20px var(--font-sans);
+  cursor: pointer;
+  transition: background var(--quick) var(--ease), color var(--quick) var(--ease);
+}
+.segments button:first-child { border-left: 0; border-radius: 7px 0 0 7px; }
+.segments button:last-child { border-radius: 0 7px 7px 0; }
+.segments button:hover { background: var(--wash); color: var(--ink); }
+.segments button[aria-pressed="true"] { background: var(--copper-wash); color: var(--copper); }
+.segments button:focus-visible { outline-offset: -2px; }
+@media (pointer: coarse) {
+  .segments button { height: 38px; }
+}
+
+/* The explanation column: short sections, each under a label, and a code block in the landing page's dark style. */
+.explain h2 { margin: 0 0 var(--space-2); }
+.explain section + section { margin-top: var(--space-5); }
+.explain p { margin: 0; font: var(--type-ui); color: var(--ink-2); text-wrap: pretty; }
+.explain p + p { margin-top: var(--space-2); }
+.code-pair {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-3);
+  background: var(--ink);
+  color: #efe7da;
+  font: var(--type-code);
+  font-size: 12px;
+  line-height: 20px;
+  overflow-x: auto;
+  white-space: pre;
+}
+.code-pair .comment { color: #9d9285; }
+.code-pair .bit { color: #e59a6c; }
+
+/* The network panel of src/demo-kit/network-view.ts: one tile per compiled layer, its weights over its live outputs. */
+.network {
+  margin-top: var(--space-7);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--rule);
+}
+.network-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-5);
+}
+.network-head h2 { margin: 0; }
+.network-head .stats { margin: 0; }
+.network > p.stats { max-width: 46em; }
+.layers {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+  padding: var(--space-3);
+  overflow-x: auto;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-3);
+  background: var(--sheet);
+  box-shadow: var(--shadow-1);
+}
+.layer-tile {
+  flex: none;
+  display: grid;
+  gap: 6px;
+  justify-items: center;
+  margin: 0;
+}
+.layer-tile canvas {
+  width: 72px;
+  height: 72px;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-1);
+  background: var(--paper);
+  image-rendering: pixelated;
+}
+.layer-tile figcaption { font: var(--type-small); color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.layer-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
+  margin-top: var(--space-2);
+  font: var(--type-small);
+  color: var(--ink-3);
+}
+.layer-legend i {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  margin-right: 6px;
+  border-radius: 2px;
+  vertical-align: -1px;
+}
+.layer-legend .positive { background: var(--copper); }
+.layer-legend .negative { background: var(--wire-indigo); }
+
+/* Game of Life: the board is a canvas that life-page.ts sizes to the column's width, 3 wide for 2 tall. */
+.board {
+  padding: var(--space-2);
+  touch-action: none;
+}
+.board canvas {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  cursor: crosshair;
+}
+
+/* Tic-tac-toe: three by three buttons. The network's scores for its last move show as a bar in each square. */
+.ttt-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-2);
+  width: min(100%, 420px);
+  aspect-ratio: 1;
+  padding: var(--space-2);
+}
+.ttt-board button {
+  position: relative;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-2);
+  background: var(--paper);
+  color: var(--ink);
+  cursor: pointer;
+  overflow: hidden;
+  transition: background var(--quick) var(--ease), border-color var(--quick) var(--ease);
+}
+.ttt-board button:hover:not(:disabled) { border-color: var(--copper-line); background: var(--sheet); }
+.ttt-board button:disabled { cursor: default; }
+.ttt-board button.win { background: var(--copper-wash); border-color: var(--copper-line); }
+.ttt-board button.last { box-shadow: inset 0 0 0 2px var(--copper-line); }
+.ttt-board svg { width: 58%; height: 58%; }
+.ttt-board .mark-x path { stroke: var(--ink); }
+.ttt-board .mark-o circle { stroke: var(--copper); }
+.ttt-board .score {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--wash);
+}
+.ttt-board .score i {
+  display: block;
+  height: 100%;
+  width: calc(var(--score, 0) * 100%);
+  border-radius: 2px;
+  background: var(--copper);
+  transition: width var(--slow) var(--ease);
+}
+.ttt-board .reason {
+  position: absolute;
+  left: 8px;
+  top: 6px;
+  font: var(--type-small);
+  color: var(--ink-3);
+}
+.tally {
+  display: flex;
+  gap: var(--space-5);
+  margin: var(--space-3) 0 0;
+}
+.tally div { display: grid; }
+.tally dt { font: var(--type-label); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+.tally dd { margin: 0; font: var(--type-figure-s); font-variant-numeric: tabular-nums; }
+.rules { margin: 0; padding-left: 1.4em; font: var(--type-ui); color: var(--ink-2); }
+.rules li + li { margin-top: 2px; }
+.rules li.fired { color: var(--copper); font-weight: 600; }
+
+/* The sorting chart: sorting-page.ts places each bar with a transform from the program's spring positions. */
+.chart {
+  position: relative;
+  padding: var(--space-4);
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.chart-area {
+  position: relative;
+  margin: 0 auto;
+  transform-origin: 0 0;
+  cursor: ns-resize;
+}
+.chart-area .floor {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-bottom: 1px solid var(--rule-strong);
+}
+.chart-bar {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  border-radius: 6px 6px 2px 2px;
+  background: color-mix(in srgb, var(--copper) calc(35% + var(--shade, 0) * 65%), var(--sheet));
+  will-change: transform, height;
+}
+.chart-bar.grabbed { background: var(--ink); }
+.chart-bar span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -20px;
+  text-align: center;
+  font: var(--type-small);
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
